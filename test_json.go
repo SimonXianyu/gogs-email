@@ -77,5 +77,6 @@ func main() {
 	var n map[string]interface{}
 	json.Unmarshal([]byte(content), &n)
 	fmt.Println(n["pusher"])
-	//fmt.Println(n["pusher"]["login"])
+	v_pusher := n["pusher"].(map[string]interface{})
+	fmt.Println(v_pusher["login"])
 }
