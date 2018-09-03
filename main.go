@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"net/smtp"
+	"strings"
 )
 
 type EmailAccount struct {
@@ -26,12 +27,17 @@ var account EmailAccount
 
 var ToAddresses = []string{
 	"simon_xianyu@163.com",
+	"xianyuhaiping@88gongxiang.com",
 }
 
 func HandleEvent(outResp http.ResponseWriter, req *http.Request) {
 	auth := smtp.PlainAuth("", account.Account, account.Password, account.Host)
 	var msg string
-	msg = "Gogs Notification on event :" + req.Header.Get("X-Gogs-Event")
+
+	msg = "To: " + strings.Join(ToAddresses, ",") + "\r\n" +
+		"Subject: GOGS notification\r\n" +
+		"\r\n" +
+		"Gogs Notification on event :" + req.Header.Get("X-Gogs-Event")
 
 	sendErr := smtp.SendMail(account.Address, auth, account.Account, ToAddresses, []byte(msg))
 	if sendErr != nil {
