@@ -1,0 +1,7 @@
+# Common
+
+*.log
+
+# IDE
+*.iml
+.idea
